@@ -5,6 +5,9 @@ name: Book classes
 on:
   schedule:
     - cron: "59 19 * * *"
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
