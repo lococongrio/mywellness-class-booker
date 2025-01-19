@@ -1,0 +1,9 @@
+facilityId: 289f3319-ec7d-4880-b82a-f5bd857f7965 # Zeist
+matchers:
+  - eventTypeId: 351ed3dc-a1b6-4569-89bc-2bfb54dfb417 # Hyrocks
+  - eventTypeId: 04ac201c-500e-4e98-b515-ab70748f2bc5 # Kickboxing
+    day: 2
+    hour: 18
+  - eventTypeId: 93331919-6ff5-4f54-b9c8-26a05880f3b7 # HIIT Athletic
+    day: 4
+    hour: 7
