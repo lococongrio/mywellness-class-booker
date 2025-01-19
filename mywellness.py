@@ -178,6 +178,8 @@ class MyWellnessSession:
             print("No classes to sign up for")
             return
 
+        print(f"Attempting to sign up for classes: {events}")
+
         counter = 0
         while events and counter < 100:
             for event in events:
