@@ -31,3 +31,6 @@ jobs:
   
     - name: Run the classes booking script
       run: python book_classes.py
+      env:
+        HWF_USERNAME: ${{ secrets.HWF_USERNAME }}
+        HWF_PASSWORD: ${{ secrets.HWF_PASSWORD }}
