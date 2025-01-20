@@ -6,7 +6,7 @@ import pytz
 import requests
 import time
 
-utc=pytz.UTC
+timezone = pytz.timezone("Europe/Amsterdam")
 
 class BookingInfo(BaseModel):
     bookingOpensOn: datetime
@@ -74,7 +74,7 @@ class ClassEvent(BaseModel):
         return session.book_event(self.id, self.partitionDate)
     
     def booking_opens_in(self, within=timedelta(seconds=10)) -> bool:
-        return self.bookingInfo.bookingOpensOn < (utc.localize(datetime.now()) + within)
+        return self.bookingInfo.bookingOpensOn < (timezone.localize(datetime.now()) + within)
     
     def is_signed_up(self):
         return self.isParticipant or self.isInWaitingList

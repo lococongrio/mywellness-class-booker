@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from config import load_config
 from credentials import load_credentials
 import time
+import pytz
 
 config = load_config()
 classEventMatcher = config.create_matcher()
@@ -12,9 +13,10 @@ if credentials is None:
     quit(1)
 
 session = credentials.login()
-now = datetime.now()
+timezone = pytz.timezone("Europe/Amsterdam")
+now = timezone.localize(datetime.now())
 today = now.strftime('%Y-%m-%d')
-in_a_week = (datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
+in_a_week = (now + timedelta(days=7)).strftime('%Y-%m-%d')
 events = [event for event in session.search_events(config.facilityId, today, in_a_week) if event.bookingInfo.bookingAvailable and classEventMatcher.matches(event)]
 
 for event in events:
