@@ -1,6 +1,6 @@
-from pydantic import BaseModel
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from pydantic import BaseModel
 from typing import List
 import pytz
 import requests
@@ -74,7 +74,7 @@ class ClassEvent(BaseModel):
         return session.book_event(self.id, self.partitionDate)
     
     def booking_opens_in(self, within=timedelta(seconds=10)) -> bool:
-        return self.bookingInfo.bookingOpensOn < (timezone.localize(datetime.now()) + within)
+        return self.bookingInfo.bookingOpensOn < (datetime.now(tz=timezone)- + within)
     
     def is_signed_up(self):
         return self.isParticipant or self.isInWaitingList
@@ -120,20 +120,22 @@ class LoginResponse(BaseModel):
 class MyWellnessCredential:
     username: str
     password: str
+    appId: str
+    client: str
+    clientversion: str
 
     def login(self) -> "MyWellnessSession":
         response = requests.post(
-            "https://services.mywellness.com/Application/EC1D38D7-D359-48D0-A60C-D8C0B8FB9DF9/Login?_c=en-US",
+            f"https://services.mywellness.com/Application/{self.appId}/Login?_c=en-US",
             json={
                 "keepMeLoggedIn": True,
                 "password": self.password,
                 "username": self.username
             },
             headers={
-                "referer": "https://widgets.mywellness.com/",
-                "x-mwapps-appid": "EC1D38D7-D359-48D0-A60C-D8C0B8FB9DF9",
-                "x-mwapps-client": "enduserweb",
-                "x-mwapps-clientversion": "1.13.10-1629,enduserweb"
+                "x-mwapps-appid": self.appId,
+                "x-mwapps-client": self.client,
+                "x-mwapps-clientversion": self.clientversion
             })
         parsed = LoginResponse.parse_raw(response.text)
         return MyWellnessSession(parsed.token, parsed.data.userContext.id)

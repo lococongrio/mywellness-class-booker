@@ -7,7 +7,7 @@ This is an automated script to sign up for classes of interest hosted by [MyWell
 You can declare your preferences in `config.py`:
 - `facilityId`:         The building you want to search lessons in, *mandatory*
 - `matchers`:           A list of matchers for classes, based on a number of attributes
-    - `eventTypeId`:    The type of class, *mandatory*
+    - `eventTypeId`:    The type of class, *optional*
     - `day`:            The starting day (Monday=0, ..., Sunday=6) of the class, *optional*
     - `hour`:           The starting hour (24H format) of the class, *optional*
 
@@ -32,11 +32,11 @@ Some adjustments may need to be made in code with regards to:
 # To do
 
 - [ ] Externalize
-    - [ ] `x-mwapps-*` headers
-    - [ ] timezone
+    - [x] `x-mwapps-*` headers
+    - [x] timezone
     - [ ] burst trigger time
     - [ ] max sleep duration
-- [ ] Merge `credentials.py` and `config.py` into `application-context.py`
+- [x] Merge `credentials.py` and `config.py` into `application-context.py`
 - [ ] Generalize ClassEventMatchers
-    - [ ] Make `eventTypeId` optional
-    - [ ] Add event name as optional matcher
+    - [x] Make `eventTypeId` optional
+    - [x] Add event name as optional matcher

@@ -1,15 +1,17 @@
 from dataclasses import dataclass
-from typing import List
 from mywellness import ClassEvent
+from typing import List, Optional
 
 @dataclass
 class ClassEventMatcher:
-    event_type_id: str
-    day: int | None = None
-    starting_hour: int | None = None
+    event_name: Optional[str] = None
+    event_type_id: Optional[str] = None
+    day: Optional[int] = None
+    starting_hour: Optional[int] = None
 
     def matches(self, classEvent: ClassEvent) -> bool:
-        return classEvent.eventTypeId == self.event_type_id \
+        return (not self.event_name or classEvent.name == self.event_name) \
+            and (not self.event_type_id or classEvent.eventTypeId == self.event_type_id) \
             and (self.day is None or self.day == classEvent.day_of_week()) \
             and (self.starting_hour is None or self.starting_hour == classEvent.start_hour())
 
