@@ -25,7 +25,9 @@ for event in events:
 events = [event for event in events if not event.is_signed_up() and not event.signup_closed() and event.booking_opens_in()]
 
 def pause_until(hour, minute, second):
+    print(f"Current time: {now}")
     next_run = now.replace(hour=hour, minute=minute, second=second)
+    print(f"Next booking run: {next_run}")
     sleep_duration = (next_run - now).total_seconds()
     if (sleep_duration > 100):
         print(f"Still {sleep_duration} seconds until the next booking run ({next_run}), exceeding the 100 second limit. Terminating")

@@ -28,3 +28,15 @@ The script expects two environment variables to be set:
 Some adjustments may need to be made in code with regards to:
 - timezones (now set to CET)
 - booking opening hours (now set to 20:00).
+
+# To do
+
+- [ ] Externalize
+    - [ ] `x-mwapps-*` headers
+    - [ ] timezone
+    - [ ] burst trigger time
+    - [ ] max sleep duration
+- [ ] Merge `credentials.py` and `config.py` into `application-context.py`
+- [ ] Generalize ClassEventMatchers
+    - [ ] Make `eventTypeId` optional
+    - [ ] Add event name as optional matcher
