@@ -14,7 +14,7 @@ if credentials is None:
 
 session = credentials.login()
 timezone = pytz.timezone("Europe/Amsterdam")
-now = timezone.localize(datetime.now())
+now = datetime.now(tz=timezone)
 today = now.strftime('%Y-%m-%d')
 in_a_week = (now + timedelta(days=7)).strftime('%Y-%m-%d')
 events = [event for event in session.search_events(config.facilityId, today, in_a_week) if event.bookingInfo.bookingAvailable and classEventMatcher.matches(event)]
