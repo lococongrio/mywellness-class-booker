@@ -32,6 +32,7 @@ class MyWellnessConfig:
 class AppConfig:
     facilityId: str
     timezone: str
+    maxSuspendSeconds: int
     matchers: List[MatcherConfig]
     mywellness: MyWellnessConfig
 
@@ -64,6 +65,7 @@ def load_config(file_path: str = "config.yaml") -> AppConfig:
         return AppConfig(
             facilityId=data['facilityId'],
             timezone=data['timezone'],
+            maxSuspendSeconds=data['maxSuspendSeconds'],
             matchers=[MatcherConfig(**matcher) for matcher in data['matchers']],
             mywellness=MyWellnessConfig(**data["mywellness"]),
         )

@@ -37,8 +37,8 @@ def pause_until(hour, minute, second):
     print(f"Current time: {now}")
     next_run = now.replace(hour=hour, minute=minute, second=second)
     sleep_duration = (next_run - now).total_seconds()
-    if (sleep_duration > 100):
-        print(f"Still {sleep_duration} seconds until the next booking run ({next_run}), exceeding the 100 second limit. Terminating")
+    if (sleep_duration > config.maxSuspendSeconds):
+        print(f"Still {sleep_duration} seconds until the next booking run ({next_run}), exceeding the maxSuspendSeconds ({config.maxSuspendSeconds}) limit. Terminating")
         quit()
     if (sleep_duration > 0):
         print(f"Pausing for {sleep_duration} seconds until {next_run}")
