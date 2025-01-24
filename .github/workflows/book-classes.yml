@@ -3,6 +3,7 @@
 name: Book classes
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "45 18 * * *"
   push:
