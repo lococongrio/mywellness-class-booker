@@ -74,7 +74,7 @@ class ClassEvent(BaseModel):
         return session.book_event(self.id, self.partitionDate)
     
     def booking_opens_in(self, within=timedelta(seconds=10)) -> bool:
-        return self.bookingInfo.bookingOpensOn < (datetime.now(tz=timezone)- + within)
+        return self.bookingInfo.bookingOpensOn < (datetime.now(tz=timezone) + within)
     
     def is_signed_up(self):
         return self.isParticipant or self.isInWaitingList

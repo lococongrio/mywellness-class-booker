@@ -28,11 +28,6 @@ interesting_events = [event for event in session.search_events(config.facilityId
 for event in interesting_events:
     print(f"Found event matching interests: {event.to_string_with_status()}")
 
-
-# Filter down to those that we can book
-bookeable_events = [event for event in interesting_events if not event.is_signed_up() and not event.signup_closed() and event.booking_opens_in()]
-
-
 def pause_until(hour, minute, second):
     print(f"Current time: {now}")
     next_run = now.replace(hour=hour, minute=minute, second=second)
@@ -47,6 +42,8 @@ def pause_until(hour, minute, second):
 # Pause until 5 seconds before opening time
 pause_until(19, 59, 55)
 
+# Filter down to those that we can book
+bookable_events = [event for event in interesting_events if not event.is_signed_up() and not event.signup_closed() and event.booking_opens_in()]
 
 # Trigger a short burst of bookings for eligible classes
-session.burst_booking(bookeable_events)
+session.burst_booking(bookable_events)
