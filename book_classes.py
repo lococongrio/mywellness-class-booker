@@ -28,6 +28,14 @@ interesting_events = [event for event in session.search_events(config.facilityId
 for event in interesting_events:
     print(f"Found event matching interests: {event.to_string_with_status()}")
 
+# Filter down to those that we can book
+bookable_events = [event for event in interesting_events if not event.is_signed_up() \
+    and not event.signup_closed() \
+        and event.booking_opens_in(timedelta(seconds=config.maxSuspendSeconds))
+        ]
+
+# Either suspends the current thread until the supplied time,
+# Or terminates, if it exceeds the maximum number of seconds to suspend
 def pause_until(hour, minute, second):
     print(f"Current time: {now}")
     next_run = now.replace(hour=hour, minute=minute, second=second)
@@ -39,11 +47,12 @@ def pause_until(hour, minute, second):
         print(f"Pausing for {sleep_duration} seconds until {next_run}")
         time.sleep(sleep_duration)
 
-# Pause until 5 seconds before opening time
-pause_until(19, 59, 55)
-
-# Filter down to those that we can book
-bookable_events = [event for event in interesting_events if not event.is_signed_up() and not event.signup_closed() and event.booking_opens_in()]
-
-# Trigger a short burst of bookings for eligible classes
-session.burst_booking(bookable_events)
+# Suspend to book events if there are any to sign up for
+if bookable_events:
+    print(f"Suspending to sign up for classes")
+    # Pause until 5 seconds before opening time
+    pause_until(19, 59, 55)
+    # Trigger a short burst of bookings for eligible classes
+    session.burst_booking(bookable_events)
+else:
+    print("No events to book")    
