@@ -5,8 +5,9 @@ from typing import List
 import pytz
 import requests
 import time
+import json
 
-timezone = pytz.timezone("Europe/Amsterdam")
+timezone = pytz.timezone("Europe/Madrid")
 
 class BookingInfo(BaseModel):
     bookingOpensOn: datetime
@@ -137,6 +138,13 @@ class MyWellnessCredential:
                 "x-mwapps-client": self.client,
                 "x-mwapps-clientversion": self.clientversion
             })
+        try:
+            response_json = response.json()
+            if 'errors' in response_json:
+                print(f"Error logging in: {response_json['errors']}")
+                exit(1)
+        except ValueError:
+            pass
         parsed = LoginResponse.parse_raw(response.text)
         return MyWellnessSession(parsed.token, parsed.data.userContext.id)
 
@@ -153,7 +161,13 @@ class MyWellnessSession:
         query_url=f"https://calendar.mywellness.com/v2/enduser/class/Search?eventTypes=Class&facilityId={facilityId}&fromDate={from_date}&toDate={to_date}"
         response = requests.get(query_url, headers=self._authorization_headers())
         if response.status_code == 200:
-            return [ClassEvent(**classEventData) for classEventData in response.json()]
+            data = response.json()
+# Download events
+#             with open('response.json', 'w') as f:
+#                         json.dump(data, f, indent=4)
+            for classEventData in data:
+                classEventData['metsPerHour'] = round(classEventData['metsPerHour'])
+            return [ClassEvent(**classEventData) for classEventData in data]
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
             return []
@@ -166,7 +180,7 @@ class MyWellnessSession:
             "classId": event_id
         }
         response = requests.post(
-            "https://calendar.mywellness.com/v2/enduser/class/Book?_c=nl-NL",
+            "https://calendar.mywellness.com/v2/enduser/class/Book?_c=en-US",
             json = booking,
             headers=self._authorization_headers()
         )

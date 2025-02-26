@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from config import load_config
 import time
+import sys
+import pytz
 
 config = load_config()
 
@@ -29,29 +31,37 @@ for event in interesting_events:
     print(f"Found event matching interests: {event.to_string_with_status()}")
 
 # Filter down to those that we can book
-bookable_events = [event for event in interesting_events if not event.is_signed_up() \
-    and not event.signup_closed() \
-        and event.booking_opens_in(timedelta(seconds=config.maxSuspendSeconds))
-        ]
+filtered_events = [event for event in interesting_events
+                   if not event.is_signed_up()
+                   and not event.signup_closed()]
 
-# Either suspends the current thread until the supplied time,
-# Or terminates, if it exceeds the maximum number of seconds to suspend
-def pause_until(hour, minute, second):
-    print(f"Current time: {now}")
-    next_run = now.replace(hour=hour, minute=minute, second=second)
-    sleep_duration = (next_run - now).total_seconds()
-    if (sleep_duration > config.maxSuspendSeconds):
-        print(f"Still {sleep_duration} seconds until the next booking run ({next_run}), exceeding the maxSuspendSeconds ({config.maxSuspendSeconds}) limit. Terminating")
-        quit()
-    if (sleep_duration > 0):
-        print(f"Pausing for {sleep_duration} seconds until {next_run}")
-        time.sleep(sleep_duration)
+# Get just the closest bookable one
+if filtered_events:
+    bookable_events = [min(filtered_events, key=lambda event: event.startDate)]
+else:
+    bookable_events = []
+    print("No bookable events found.")
+print()
+for event in bookable_events:
+    print(f"Found bookable event: {event.to_string_with_status()}")
+    print()
+
+# Suspends the current thread until the supplied time,
+def pause_until(pause_time):
+    tz = pytz.timezone('Europe/Berlin')  # Replace with your timezone
+    while datetime.now(tz) < pause_time:
+        time.sleep(1)
 
 # Suspend to book events if there are any to sign up for
 if bookable_events:
-    print(f"Suspending to sign up for classes")
-    # Pause until 5 seconds before opening time
-    pause_until(19, 59, 55)
+    booking_time = bookable_events[0].bookingInfo.bookingOpensOn
+    print(f"Booking time: {booking_time}")
+    pause_time = booking_time - timedelta(seconds=5)
+    print(f"Pausing until: {pause_time}")
+    pause_until(pause_time)
+    print(f"Current time: {datetime.now(tz)}")
+    # Attempt to book the class
+    print(f"Attempting to book {bookable_events[0].name}")
     # Trigger a short burst of bookings for eligible classes
     session.burst_booking(bookable_events)
 else:

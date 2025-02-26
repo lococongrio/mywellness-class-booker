@@ -18,7 +18,7 @@ class MatcherConfig:
     hour: Optional[int] = None
 
     def create_matcher(self) -> ClassEventMatcher:
-        return ClassEventMatcher(self.eventName, self.eventTypeId, self.day, self.hour)
+        return ClassEventMatcher(self.eventName, self.eventTypeId or None, self.day, self.hour)
 
 
 @dataclass
