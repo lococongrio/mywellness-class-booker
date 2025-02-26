@@ -41,4 +41,4 @@ The script expects two environment variables to be set:
 1. Run `make run` _(add your mywellness email/password to .env)_
 
 # To do
-- AWS deployment
+- AWS deployment _(checking if github action approach is good enough)_
