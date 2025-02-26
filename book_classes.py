@@ -4,6 +4,8 @@ import time
 import sys
 import pytz
 
+print("Starting running application...")
+
 config = load_config()
 
 # Establish a session
