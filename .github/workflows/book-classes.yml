@@ -5,7 +5,7 @@ name: Book classes
 on:
   workflow_dispatch:
   schedule:
-    - cron: "55 6 * * 0-3"
+    - cron: "59 6 * * 0-3"
   push:
     branches:
       - main
