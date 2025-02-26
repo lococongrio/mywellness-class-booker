@@ -6,7 +6,6 @@ import os
 import pytz
 import yaml
 
-
 password_key='HWF_PASSWORD'
 username_key='HWF_USERNAME'
 

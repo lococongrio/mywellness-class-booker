@@ -39,6 +39,3 @@ The script expects two environment variables to be set:
 
 # Running the application with docker
 1. Run `make run` _(add your mywellness email/password to .env)_
-
-# To do
-- AWS deployment _(checking if github action approach is good enough)_
