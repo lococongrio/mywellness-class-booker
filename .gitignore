@@ -1,1 +1,7 @@
 __pycache__
+.env
+.idea
+response.json
+aws/node_modules
+aws/cdk.out
+src/layer

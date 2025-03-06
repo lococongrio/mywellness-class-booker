@@ -1,0 +1,20 @@
+facilityId: d42c4c34-f513-4c4a-9096-162b4a7d0396 # San Vicente del Raspeig
+timezone: Europe/Madrid
+maxSuspendSeconds: 100 # Max time to suspend 
+matchers:
+  - eventName: BOOMPA
+    day: 0
+    hour: 7
+  - eventName: SYNERCYCLING
+    day: 1
+    hour: 7
+  - eventName: CROSS STRENGTH
+    day: 2
+    hour: 7
+  - eventName: CROSS BOXING
+    day: 3
+    hour: 7
+mywellness:
+  appId: EC1D38D7-D359-48D0-A60C-D8C0B8FB9DF9
+  client: enduserweb
+  clientversion: 1.13.10-1629,enduserweb

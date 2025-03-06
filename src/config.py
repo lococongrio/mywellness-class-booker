@@ -6,7 +6,6 @@ import os
 import pytz
 import yaml
 
-
 password_key='HWF_PASSWORD'
 username_key='HWF_USERNAME'
 
@@ -18,7 +17,7 @@ class MatcherConfig:
     hour: Optional[int] = None
 
     def create_matcher(self) -> ClassEventMatcher:
-        return ClassEventMatcher(self.eventName, self.eventTypeId, self.day, self.hour)
+        return ClassEventMatcher(self.eventName, self.eventTypeId or None, self.day, self.hour)
 
 
 @dataclass
@@ -45,7 +44,7 @@ class AppConfig:
         if missing_keys:
             print(f"Missig environment variables to load credentials: {missing_keys}")
             return None
-        
+
         return MyWellnessCredential(
             os.environ[username_key],
             os.environ[password_key],
