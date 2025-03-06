@@ -163,7 +163,7 @@ class MyWellnessSession:
         if response.status_code == 200:
             data = response.json()
 # Download events
-#             with open('response.json', 'w') as f:
+#             with open('../response.json', 'w') as f:
 #                         json.dump(data, f, indent=4)
             for classEventData in data:
                 classEventData['metsPerHour'] = round(classEventData['metsPerHour'])

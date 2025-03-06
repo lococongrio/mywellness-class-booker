@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from config import load_config
 import time
+import subprocess
 
 print("Starting running application...")
 
@@ -8,9 +9,11 @@ config = load_config()
 
 # Establish a session
 credentials = config.load_credentials()
+
 if credentials is None:
     print("Failed to obtain MyWellness credentials. Terminating")
     quit(1)
+
 session = credentials.login()
 print(f"Established a session with user id: {session.user_id}")
 
@@ -49,20 +52,23 @@ def pause_until(run_time):
     sleep_duration = (run_time - now).total_seconds()
     if (sleep_duration > config.maxSuspendSeconds):
         print(f"Still {sleep_duration} seconds until the next booking run ({run_time}), exceeding the maxSuspendSeconds ({config.maxSuspendSeconds}) limit. Terminating")
-        quit()
+        return False
     if (sleep_duration > 0):
         print(f"Pausing for {sleep_duration} seconds until {run_time}")
         time.sleep(sleep_duration)
+    return True
 
 # Suspend to book events if there are any to sign up for
 if bookable_events:
     booking_time = bookable_events[0].bookingInfo.bookingOpensOn
     print(f"Booking time: {booking_time}")
     run_time = booking_time - timedelta(seconds=5)
-    pause_until(run_time)
-    # Attempt to book the class
-    print(f"Attempting to book {bookable_events[0].name}")
-    # Trigger a short burst of bookings for eligible classes
-    session.burst_booking(bookable_events)
+    if pause_until(run_time):
+        # Attempt to book the class
+        print(f"Attempting to book {bookable_events[0].name}")
+        # Trigger a short burst of bookings for eligible classes
+        session.burst_booking(bookable_events)
+    else:
+        print("Suspend time exceeded, bye bye")
 else:
-    print("No events to book")
+    print("No events to book, bye bye")

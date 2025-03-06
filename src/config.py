@@ -44,7 +44,7 @@ class AppConfig:
         if missing_keys:
             print(f"Missig environment variables to load credentials: {missing_keys}")
             return None
-        
+
         return MyWellnessCredential(
             os.environ[username_key],
             os.environ[password_key],
