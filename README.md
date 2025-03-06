@@ -12,6 +12,8 @@ Features added/adapted:
 - Env variables copied from .env.dist to .env and passed to docker container
 - Download of events data _(commented by default)_
 - Time and gym settings changed to Spain 😉
+- Local environment dockerized
+- Support for running it in AWS (CDK typescript)
 
 # Preferences
 
