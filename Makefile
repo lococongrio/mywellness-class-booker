@@ -31,15 +31,15 @@ cdk-prettier: ## Run prettier
 
 .PHONY: cdk-diff
 cdk-diff: cdk-build-python-layer ## Shows the diff of the changes you have with what is deployed
-	$(DOCKER_COMPOSE_RUN_CDK) npm run cdk-diff
+	$(DOCKER_COMPOSE_RUN_CDK) npm run cdk-diff -- --profile PersonalAdmin
 
 .PHONY: cdk-synth
 cdk-synth: cdk-build-python-layer ## Synthesize the cloudformation template from the CDK code
-	$(DOCKER_COMPOSE_RUN_CDK) npm run cdk-synth
+	$(DOCKER_COMPOSE_RUN_CDK) npm run cdk-synth -- --profile PersonalAdmin
 
 .PHONY: cdk-deploy
 cdk-deploy: cdk-build-python-layer ## Deploy all stacks
-	$(DOCKER_COMPOSE_RUN_CDK) npm run cdk-deploy
+	$(DOCKER_COMPOSE_RUN_CDK) npm run cdk-deploy -- --profile PersonalAdmin
 
 .PHONY: cdk-build-python-layer
 cdk-build-python-layer: ## Build python layer
